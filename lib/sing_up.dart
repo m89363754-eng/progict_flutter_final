@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class SingUp extends StatelessWidget {
+class SingUp extends StatefulWidget {
   const SingUp({super.key});
+
+  @override
+  State<SingUp> createState() => _SingUpState();
+}
+
+class _SingUpState extends State<SingUp> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -13,113 +20,179 @@ class SingUp extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            // عشان ما يحصل overflow
             child: Column(
               children: [
                 SizedBox(height: height * 0.12),
                 Image.asset("assets/images/final_1.jpeg", width: width * 0.2),
                 Text(
-                  " مرحباٌ بكم فى هودوري!",
+                  "Create Account",
                   style: TextStyle(
-                    fontSize: 29.2,
+                    fontSize: 29,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Amiri',
                   ),
                 ),
                 Text(
-                  " سجل الان وانضم للمجتمع الراقي",
-                  style: TextStyle(
-                    fontSize: 19.2,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: 'Amiri',
-                  ),
+                  "Sign up to get started",
+                  style: TextStyle(fontSize: 14, fontFamily: 'Amiri'),
                 ),
-                SizedBox(height: 20),
-                // TextFields...
-                Container(
-                  width: width * 0.9,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 237, 234, 234),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "البريد الاكتروني",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
+                SizedBox(height: 40),
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    width: 310,
+                    padding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 0.2,
+                        color: Colors.grey.shade400,
                       ),
-                      suffixIcon: Icon(Icons.attach_email_outlined),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 4,
+                          blurRadius: 6,
+                          offset: Offset(4, 4),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: width * 0.9,
-                  height: height * 0.06,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 237, 234, 234),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "رقم الهاتف",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
-                      suffixIcon: Icon(Icons.phone_outlined),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                  width: width * 0.9,
-                  height: height * 0.06,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 237, 234, 234),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "كلمه المرور",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
-                      suffixIcon: Icon(Icons.security_outlined),
+                    child: Column(
+                      children: [
+                        buildField(
+                          width,
+                          label: "Full Name",
+                          hint: "John Doe",
+                          icon: Icons.person_outline,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter your name";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 15),
+                        buildField(
+                          width,
+                          label: "Email address",
+                          hint: "you@company.com",
+                          icon: Icons.attach_email_outlined,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter your email";
+                            }
+                            if (!value.contains("@")) {
+                              return "Invalid email";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 15),
+                        buildField(
+                          width,
+                          label: "Password",
+                          hint: "Enter password",
+                          icon: Icons.security,
+                          obscure: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Enter password";
+                            }
+                            if (value.length < 6) {
+                              return "Password too short";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              print("Account Created");
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              1,
+                              27,
+                              49,
+                            ),
+                            minimumSize: Size(width * 0.8, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize: Size(width * 0.8, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: Text(
-                    "تسجيل الدخول",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 23.0,
-                    ),
+                    "Already have an account? Sign in",
+                    style: TextStyle(color: Colors.blue),
                   ),
                 ),
-                SizedBox(height: 50),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildField(
+    double width, {
+    required String label,
+    required String hint,
+    required IconData icon,
+    bool obscure = false,
+    String? Function(String?)? validator,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: width * 0.05),
+          child: Text(label),
+        ),
+        SizedBox(height: 6),
+        Container(
+          width: width * 0.9,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color.fromARGB(255, 237, 234, 234),
+          ),
+          child: TextFormField(
+            obscureText: obscure,
+            validator: validator,
+            decoration: InputDecoration(
+              hintText: hint,
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
+              suffixIcon: Icon(icon),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
