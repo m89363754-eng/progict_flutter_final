@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_application_14/features/auth/AuthCubit/cubit/auth_cubit_cubit.dart';
+import 'package:flutter_application_14/features/auth/utils/customsnackbar.dart';
+import 'package:flutter_application_14/features/auth/views/sign_in_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -10,7 +15,6 @@ import '../../../core/widgets/primary_button.dart';
 import '../utils/auth_validators.dart';
 import '../viewmodels/sign_up_viewmodel.dart';
 
-/// Sign-up screen – allows new users to create an account.
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
 
@@ -91,10 +95,30 @@ class _SignUpBody extends StatelessWidget {
                           validator: AuthValidators.validatePassword,
                         ),
                         const SizedBox(height: 24),
-                        PrimaryButton(
-                          label: AppStrings.signUp,
-                          isLoading: viewModel.isLoading,
-                          onPressed: () => _onSignUp(context, viewModel),
+                        BlocListener<AuthCubitCubit, AuthCubitState>(
+                          listener: (context, state) async {
+                            if (state is AuthCubiSuccess) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                CustomSnackbar.success(
+                                  "Success SignUp Now Sign In",
+                                ),
+                              );
+                              await Future.delayed(Duration(seconds: 4));
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignInView(),
+                                ),
+                              );
+                            } else if (state is AuthCubitfailur) {
+                              CustomSnackbar.error(state.message);
+                            } else {}
+                          },
+                          child: PrimaryButton(
+                            label: AppStrings.signUp,
+                            isLoading: viewModel.isLoading,
+                            onPressed: () => _onSignUp(context, viewModel),
+                          ),
                         ),
                       ],
                     ),
@@ -103,9 +127,13 @@ class _SignUpBody extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                // ── Navigate back to Sign In ───────────────────────────
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInView()),
+                    );
+                  },
                   child: const Text(
                     AppStrings.alreadyHaveAccount,
                     style: TextStyle(color: AppColors.link),
@@ -123,12 +151,7 @@ class _SignUpBody extends StatelessWidget {
     BuildContext context,
     SignUpViewModel viewModel,
   ) async {
-    final success = await viewModel.signUp();
-    if (success && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully!')),
-      );
-      Navigator.pop(context);
-    }
+    final success = await viewModel.signUp(context);
+    if (success && context.mounted) {}
   }
 }

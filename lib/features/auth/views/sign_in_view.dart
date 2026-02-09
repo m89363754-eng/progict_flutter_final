@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_14/core/navigation/main_shell.dart';
+import 'package:flutter_application_14/features/auth/AuthCubit/cubit/auth_cubit_cubit.dart';
+import 'package:flutter_application_14/features/auth/utils/customsnackbar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -12,7 +16,6 @@ import '../../../core/widgets/social_login_button.dart';
 import '../utils/auth_validators.dart';
 import '../viewmodels/sign_in_viewmodel.dart';
 
-/// Sign-in screen – allows returning users to authenticate.
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
 
@@ -41,14 +44,12 @@ class _SignInBody extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 48),
-                // ── Logo ───────────────────────────────────────────────
                 Image.asset(
                   AppStrings.logoPath,
                   width: MediaQuery.sizeOf(context).width * 0.2,
                 ),
                 const SizedBox(height: 16),
 
-                // ── Title ──────────────────────────────────────────────
                 const Text(
                   AppStrings.welcomeBack,
                   style: AppTextStyles.heading,
@@ -60,7 +61,6 @@ class _SignInBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-                // ── Form Card ──────────────────────────────────────────
                 AuthCard(
                   child: Form(
                     key: viewModel.formKey,
@@ -84,11 +84,40 @@ class _SignInBody extends StatelessWidget {
                           validator: AuthValidators.validatePassword,
                         ),
                         const SizedBox(height: 24),
-                        PrimaryButton(
-                          label: AppStrings.signIn,
-                          isLoading: viewModel.isLoading,
-                          onPressed: () => _onSignIn(context, viewModel),
+                        BlocConsumer<AuthCubitCubit, AuthCubitState>(
+                          listener: (context, state) {
+                            if (state is AuthCubiSuccess) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                CustomSnackbar.success("Success SignIn"),
+                              );
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => MainShell()),
+                              );
+                            }
+
+                            if (state is AuthCubitfailur) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                CustomSnackbar.error(state.message),
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is AuthCubitLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            return PrimaryButton(
+                              label: AppStrings.signIn,
+                              isLoading: viewModel.isLoading,
+                              onPressed: () => _onSignIn(context, viewModel),
+                            );
+                          },
                         ),
+
                         const SizedBox(height: 20),
                         const Text(
                           AppStrings.orContinueWith,
@@ -96,7 +125,6 @@ class _SignInBody extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
 
-                        // ── Social Buttons ─────────────────────────────
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -118,7 +146,6 @@ class _SignInBody extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                // ── Navigate to Sign Up ────────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -145,12 +172,7 @@ class _SignInBody extends StatelessWidget {
     BuildContext context,
     SignInViewModel viewModel,
   ) async {
-    final success = await viewModel.signIn();
-    if (success && context.mounted) {
-      // TODO: Navigate to home screen on successful login.
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Sign-in successful!')));
-    }
+    final success = await viewModel.signIn(context);
+    if (success && context.mounted) {}
   }
 }
