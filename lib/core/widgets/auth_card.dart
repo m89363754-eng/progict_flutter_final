@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
+import '../utils/responsive.dart';
 
 /// A card container with shadow, used for auth forms.
 class AuthCard extends StatelessWidget {
@@ -9,12 +10,14 @@ class AuthCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final re = Responsive(context);
     return Container(
-      width: 320,
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+      width: re.isTablet ? re.w(320) : double.infinity,
+      constraints: BoxConstraints(maxWidth: re.maxContentWidth),
+      padding: EdgeInsets.symmetric(vertical: re.h(32), horizontal: re.w(16)),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(re.r(20)),
         border: Border.all(width: 0.2, color: AppColors.border),
         boxShadow: [
           BoxShadow(

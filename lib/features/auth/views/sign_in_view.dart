@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_14/core/navigation/main_shell.dart';
+import 'package:flutter_application_14/core/utils/responsive.dart';
+import 'package:flutter_application_14/features/auth/AuthCubit/cubit/auth_cubit_cubit.dart';
+import 'package:flutter_application_14/features/auth/utils/customsnackbar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -12,7 +17,6 @@ import '../../../core/widgets/social_login_button.dart';
 import '../utils/auth_validators.dart';
 import '../viewmodels/sign_in_viewmodel.dart';
 
-/// Sign-in screen – allows returning users to authenticate.
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
 
@@ -31,34 +35,30 @@ class _SignInBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SignInViewModel>();
+    final re = Responsive(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: re.horizontalPadding,
             child: Column(
               children: [
-                const SizedBox(height: 48),
-                // ── Logo ───────────────────────────────────────────────
-                Image.asset(
-                  AppStrings.logoPath,
-                  width: MediaQuery.sizeOf(context).width * 0.2,
-                ),
-                const SizedBox(height: 16),
+                SizedBox(height: re.h(48)),
+                Image.asset(AppStrings.logoPath, width: re.w(75)),
+                SizedBox(height: re.h(16)),
 
-                // ── Title ──────────────────────────────────────────────
-                const Text(
+                Text(
                   AppStrings.welcomeBack,
-                  style: AppTextStyles.heading,
+                  style: AppTextStyles.heading.copyWith(fontSize: re.sp(29)),
                 ),
-                const SizedBox(height: 4),
-                const Text(
+                SizedBox(height: re.h(4)),
+                Text(
                   AppStrings.signInSubtitle,
-                  style: AppTextStyles.subtitle,
+                  style: AppTextStyles.subtitle.copyWith(fontSize: re.sp(14)),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: re.h(40)),
 
                 AuthCard(
                   child: Form(
@@ -82,18 +82,49 @@ class _SignInBody extends StatelessWidget {
                           controller: viewModel.passwordController,
                           validator: AuthValidators.validatePassword,
                         ),
-                        const SizedBox(height: 24),
-                        PrimaryButton(
-                          label: AppStrings.signIn,
-                          isLoading: viewModel.isLoading,
-                          onPressed: () => _onSignIn(context, viewModel),
+                        SizedBox(height: re.h(24)),
+                        BlocConsumer<AuthCubitCubit, AuthCubitState>(
+                          listener: (context, state) {
+                            if (state is AuthCubiSuccess) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                CustomSnackbar.success("Success SignIn"),
+                              );
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (_) => MainShell()),
+                              );
+                            }
+
+                            if (state is AuthCubitfailur) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                CustomSnackbar.error(state.message),
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is AuthCubitLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            return PrimaryButton(
+                              label: AppStrings.signIn,
+                              isLoading: viewModel.isLoading,
+                              onPressed: () => _onSignIn(context, viewModel),
+                            );
+                          },
                         ),
+
                         const SizedBox(height: 20),
-                        const Text(
+                        Text(
                           AppStrings.orContinueWith,
-                          style: AppTextStyles.dividerText,
+                          style: AppTextStyles.dividerText.copyWith(
+                            fontSize: re.sp(11),
+                          ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: re.h(20)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -114,7 +145,7 @@ class _SignInBody extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: re.h(32)),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -142,12 +173,7 @@ class _SignInBody extends StatelessWidget {
     BuildContext context,
     SignInViewModel viewModel,
   ) async {
-    final success = await viewModel.signIn();
-    if (success && context.mounted) {
-      // TODO: Navigate to home screen on successful login.
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Sign-in successful!')));
-    }
+    final success = await viewModel.signIn(context);
+    if (success && context.mounted) {}
   }
 }
