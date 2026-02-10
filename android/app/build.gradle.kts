@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.sakeni"
+    namespace = "com.example.flutter_application_14"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
