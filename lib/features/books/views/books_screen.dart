@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../core/widgets/blue_header.dart';
 import '../../../core/GetFeaturesBookscubit/get_feature_books_cubit.dart';
 import 'widgets/book_tile.dart';
@@ -97,8 +98,9 @@ class _BooksScreenState extends State<BooksScreen>
   }
 
   Widget _buildSearchBar(ColorScheme cs) {
+    final re = Responsive(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      padding: EdgeInsets.fromLTRB(re.w(16), re.h(8), re.w(16), re.h(8)),
       child: Container(
         decoration: BoxDecoration(
           color: cs.surfaceContainerHighest.withValues(alpha: 0.5),
@@ -166,6 +168,7 @@ class _BooksScreenState extends State<BooksScreen>
   }
 
   Widget _buildList(GetFeatureBooksSuccess state) {
+    final re = Responsive(context);
     return RefreshIndicator(
       onRefresh: () async {
         _animCtrl.reset();
@@ -175,7 +178,7 @@ class _BooksScreenState extends State<BooksScreen>
             : await context.read<GetFeatureBooksCubit>().getFeaturebooks();
       },
       child: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+        padding: EdgeInsets.fromLTRB(re.w(16), re.h(4), re.w(16), re.h(16)),
         itemCount: state.books.length,
         itemBuilder: (_, i) {
           final d = (i * 0.06).clamp(0.0, 0.6);

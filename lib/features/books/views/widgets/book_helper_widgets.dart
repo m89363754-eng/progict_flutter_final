@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 
 class TagChip extends StatelessWidget {
   final String label;
@@ -16,23 +17,24 @@ class TagChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final re = Responsive(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: re.w(7), vertical: re.h(2)),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(re.r(6)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: 11, color: textColor),
-            const SizedBox(width: 3),
+            Icon(icon, size: re.icon(11), color: textColor),
+            SizedBox(width: re.w(3)),
           ],
           Text(
             label,
             style: TextStyle(
-              fontSize: 10.5,
+              fontSize: re.sp(10.5),
               fontWeight: FontWeight.w600,
               color: textColor,
             ),
@@ -57,21 +59,22 @@ class DetailChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final re = Responsive(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: re.w(10), vertical: re.h(6)),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(re.r(20)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: colorScheme.onSurfaceVariant),
-          const SizedBox(width: 5),
+          Icon(icon, size: re.icon(14), color: colorScheme.onSurfaceVariant),
+          SizedBox(width: re.w(5)),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: re.sp(12),
               fontWeight: FontWeight.w500,
               color: colorScheme.onSurfaceVariant,
             ),
@@ -94,6 +97,7 @@ class ImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final re = Responsive(context);
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -108,8 +112,8 @@ class ImagePlaceholder extends StatelessWidget {
       child: Center(
         child: loading
             ? SizedBox(
-                width: 22,
-                height: 22,
+                width: re.w(22),
+                height: re.w(22),
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
                   color: colorScheme.primary.withValues(alpha: 0.5),
@@ -118,7 +122,7 @@ class ImagePlaceholder extends StatelessWidget {
             : Icon(
                 Icons.menu_book_rounded,
                 color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-                size: 28,
+                size: re.icon(28),
               ),
       ),
     );

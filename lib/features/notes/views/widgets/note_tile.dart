@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 import '../../data/models/note.dart';
 import 'note_edit_sheet.dart';
 
@@ -28,20 +29,21 @@ class NoteTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     return Dismissible(
       key: ValueKey(note.id),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 24),
+        padding: EdgeInsets.only(right: re.w(24)),
         decoration: BoxDecoration(
           color: const Color(0xFFC62828),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(re.r(16)),
         ),
-        child: const Icon(
+        child: Icon(
           Icons.delete_outline_rounded,
           color: Colors.white,
-          size: 28,
+          size: re.icon(28),
         ),
       ),
       confirmDismiss: (_) => showDialog<bool>(
@@ -68,29 +70,34 @@ class NoteTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: cs.surfaceContainer,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(re.r(16)),
           border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(re.r(16)),
           onTap: () =>
               showEditNoteSheet(context, content: note.content, onSave: onEdit),
           child: IntrinsicHeight(
             child: Row(
               children: [
                 Container(
-                  width: 5,
+                  width: re.w(5),
                   decoration: BoxDecoration(
                     color: _accent,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      bottomLeft: Radius.circular(16),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(re.r(16)),
+                      bottomLeft: Radius.circular(re.r(16)),
                     ),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(14, 14, 8, 14),
+                    padding: EdgeInsets.fromLTRB(
+                      re.w(14),
+                      re.h(14),
+                      re.w(8),
+                      re.h(14),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -99,28 +106,28 @@ class NoteTile extends StatelessWidget {
                           maxLines: 4,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: re.sp(15),
                             fontWeight: FontWeight.w500,
                             color: cs.onSurface,
                             height: 1.4,
                           ),
                         ),
                         if (note.timeAgo.isNotEmpty) ...[
-                          const SizedBox(height: 8),
+                          SizedBox(height: re.h(8)),
                           Row(
                             children: [
                               Icon(
                                 Icons.schedule_rounded,
-                                size: 13,
+                                size: re.icon(13),
                                 color: cs.onSurfaceVariant.withValues(
                                   alpha: 0.6,
                                 ),
                               ),
-                              const SizedBox(width: 4),
+                              SizedBox(width: re.w(4)),
                               Text(
                                 note.timeAgo,
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: re.sp(12),
                                   color: cs.onSurfaceVariant.withValues(
                                     alpha: 0.6,
                                   ),
@@ -137,7 +144,11 @@ class NoteTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.edit_outlined, size: 20, color: _accent),
+                      icon: Icon(
+                        Icons.edit_outlined,
+                        size: re.icon(20),
+                        color: _accent,
+                      ),
                       tooltip: 'Edit',
                       onPressed: () => showEditNoteSheet(
                         context,
@@ -148,7 +159,7 @@ class NoteTile extends StatelessWidget {
                     IconButton(
                       icon: Icon(
                         Icons.delete_outline_rounded,
-                        size: 20,
+                        size: re.icon(20),
                         color: cs.error.withValues(alpha: 0.7),
                       ),
                       tooltip: 'Delete',

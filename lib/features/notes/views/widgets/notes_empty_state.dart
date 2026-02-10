@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 
 class NotesEmptyState extends StatelessWidget {
   final VoidCallback onAdd;
@@ -7,46 +8,47 @@ class NotesEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+        padding: EdgeInsets.symmetric(horizontal: re.w(40)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 120,
-              height: 120,
+              width: re.w(120),
+              height: re.w(120),
               decoration: BoxDecoration(
                 color: cs.tertiaryContainer.withValues(alpha: 0.3),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.sticky_note_2_outlined,
-                size: 56,
+                size: re.icon(56),
                 color: cs.tertiary.withValues(alpha: 0.7),
               ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: re.h(32)),
             Text(
               'No Notes Yet',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: re.sp(22),
                 fontWeight: FontWeight.w700,
                 color: cs.onSurface,
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: re.h(12)),
             Text(
               'Capture your ideas and thoughts.\n'
               'Tap the button below to create your first note.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: re.sp(15),
                 height: 1.5,
                 color: cs.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 36),
+            SizedBox(height: re.h(36)),
             FilledButton.tonalIcon(
               onPressed: onAdd,
               icon: const Icon(Icons.edit_note_rounded),

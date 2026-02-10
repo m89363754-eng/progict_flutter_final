@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 
 class BooksShimmerList extends StatelessWidget {
   const BooksShimmerList({super.key});
@@ -7,12 +8,13 @@ class BooksShimmerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+      padding: EdgeInsets.fromLTRB(re.w(16), re.h(8), re.w(16), re.h(16)),
       itemCount: 6,
       itemBuilder: (_, __) => Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: _ShimmerTile(colorScheme: cs),
+        padding: EdgeInsets.only(bottom: re.h(10)),
+        child: _ShimmerTile(colorScheme: cs, re: re),
       ),
     );
   }
@@ -20,7 +22,8 @@ class BooksShimmerList extends StatelessWidget {
 
 class _ShimmerTile extends StatefulWidget {
   final ColorScheme colorScheme;
-  const _ShimmerTile({required this.colorScheme});
+  final Responsive re;
+  const _ShimmerTile({required this.colorScheme, required this.re});
 
   @override
   State<_ShimmerTile> createState() => _ShimmerTileState();
@@ -48,6 +51,7 @@ class _ShimmerTileState extends State<_ShimmerTile>
   @override
   Widget build(BuildContext context) {
     final cs = widget.colorScheme;
+    final re = widget.re;
     return AnimatedBuilder(
       animation: _ctrl,
       builder: (_, __) {
@@ -55,35 +59,35 @@ class _ShimmerTileState extends State<_ShimmerTile>
         return Opacity(
           opacity: opacity,
           child: Container(
-            height: 120,
+            height: re.h(120),
             decoration: BoxDecoration(
               color: cs.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(re.r(16)),
             ),
             child: Row(
               children: [
                 Container(
-                  width: 80,
-                  margin: const EdgeInsets.all(12),
+                  width: re.w(80),
+                  margin: EdgeInsets.all(re.w(12)),
                   decoration: BoxDecoration(
                     color: cs.surfaceContainer,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(re.r(10)),
                   ),
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16,
-                      horizontal: 8,
+                    padding: EdgeInsets.symmetric(
+                      vertical: re.h(16),
+                      horizontal: re.w(8),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _bar(cs, double.infinity, 14),
-                        const SizedBox(height: 10),
-                        _bar(cs, 120, 12),
+                        _bar(cs, re, double.infinity, re.h(14)),
+                        SizedBox(height: re.h(10)),
+                        _bar(cs, re, re.w(120), re.h(12)),
                         const Spacer(),
-                        _bar(cs, 180, 10),
+                        _bar(cs, re, re.w(180), re.h(10)),
                       ],
                     ),
                   ),
@@ -96,13 +100,13 @@ class _ShimmerTileState extends State<_ShimmerTile>
     );
   }
 
-  Widget _bar(ColorScheme cs, double w, double h) {
+  Widget _bar(ColorScheme cs, Responsive re, double w, double h) {
     return Container(
       height: h,
       width: w,
       decoration: BoxDecoration(
         color: cs.surfaceContainer,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(re.r(4)),
       ),
     );
   }

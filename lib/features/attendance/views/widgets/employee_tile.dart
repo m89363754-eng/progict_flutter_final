@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 import '../../data/models/employee.dart';
 
 class EmployeeTile extends StatelessWidget {
@@ -16,6 +17,7 @@ class EmployeeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     final p = employee.isPresent;
 
     return Dismissible(
@@ -23,15 +25,15 @@ class EmployeeTile extends StatelessWidget {
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: 24),
+        padding: EdgeInsets.only(right: re.w(24)),
         decoration: BoxDecoration(
           color: const Color(0xFFC62828),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(re.r(16)),
         ),
-        child: const Icon(
+        child: Icon(
           Icons.delete_outline_rounded,
           color: Colors.white,
-          size: 28,
+          size: re.icon(28),
         ),
       ),
       confirmDismiss: (_) => _confirmDelete(context),
@@ -39,7 +41,7 @@ class EmployeeTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: cs.surfaceContainer,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(re.r(16)),
           border: Border.all(
             color: p
                 ? const Color(0xFF2E7D32).withValues(alpha: 0.3)
@@ -47,14 +49,17 @@ class EmployeeTile extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(re.r(16)),
           onTap: onToggle,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            padding: EdgeInsets.symmetric(
+              horizontal: re.w(16),
+              vertical: re.h(14),
+            ),
             child: Row(
               children: [
                 _Avatar(initials: employee.initials, isPresent: p),
-                const SizedBox(width: 14),
+                SizedBox(width: re.w(14)),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,19 +69,19 @@ class EmployeeTile extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: re.sp(16),
                           fontWeight: FontWeight.w600,
                           color: cs.onSurface,
                         ),
                       ),
                       if (employee.role.isNotEmpty) ...[
-                        const SizedBox(height: 3),
+                        SizedBox(height: re.h(3)),
                         Text(
                           employee.role,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: re.sp(13),
                             color: cs.onSurfaceVariant,
                           ),
                         ),
@@ -84,9 +89,9 @@ class EmployeeTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: re.w(8)),
                 _Badge(isPresent: p),
-                const SizedBox(width: 8),
+                SizedBox(width: re.w(8)),
                 Switch.adaptive(
                   value: p,
                   activeTrackColor: const Color(

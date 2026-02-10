@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 
 class BooksErrorView extends StatelessWidget {
   final String message;
@@ -13,9 +14,10 @@ class BooksErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(re.w(32)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -27,31 +29,35 @@ class BooksErrorView extends StatelessWidget {
                 child: Opacity(opacity: v, child: child),
               ),
               child: Container(
-                width: 80,
-                height: 80,
+                width: re.w(80),
+                height: re.w(80),
                 decoration: BoxDecoration(
                   color: cs.errorContainer.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.cloud_off_rounded, size: 40, color: cs.error),
+                child: Icon(
+                  Icons.cloud_off_rounded,
+                  size: re.icon(40),
+                  color: cs.error,
+                ),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: re.h(24)),
             Text(
               'Something went wrong',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: re.sp(18),
                 fontWeight: FontWeight.w700,
                 color: cs.onSurface,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: re.h(8)),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: cs.onSurfaceVariant),
+              style: TextStyle(fontSize: re.sp(14), color: cs.onSurfaceVariant),
             ),
-            const SizedBox(height: 28),
+            SizedBox(height: re.h(28)),
             FilledButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh_rounded),

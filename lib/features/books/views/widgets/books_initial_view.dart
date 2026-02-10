@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 
 class BooksInitialView extends StatelessWidget {
   const BooksInitialView({super.key});
@@ -6,6 +7,7 @@ class BooksInitialView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -16,14 +18,14 @@ class BooksInitialView extends StatelessWidget {
             curve: Curves.elasticOut,
             builder: (_, v, child) => Transform.scale(scale: v, child: child),
             child: SizedBox(
-              width: 150,
-              height: 130,
+              width: re.w(150),
+              height: re.h(130),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Container(
-                    width: 120,
-                    height: 120,
+                    width: re.w(120),
+                    height: re.w(120),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: cs.primaryContainer.withValues(alpha: 0.25),
@@ -33,26 +35,26 @@ class BooksInitialView extends StatelessWidget {
                     angle: -0.2,
                     child: _BookSpine(
                       color: cs.primary.withValues(alpha: 0.5),
-                      width: 48,
-                      height: 68,
+                      width: re.w(48),
+                      height: re.h(68),
                     ),
                   ),
                   Transform.translate(
-                    offset: const Offset(8, -4),
+                    offset: Offset(re.w(8), re.h(-4)),
                     child: _BookSpine(
                       color: cs.primaryContainer,
-                      width: 48,
-                      height: 74,
+                      width: re.w(48),
+                      height: re.h(74),
                     ),
                   ),
                   Transform.rotate(
                     angle: 0.15,
                     child: Transform.translate(
-                      offset: const Offset(16, 2),
+                      offset: Offset(re.w(16), re.h(2)),
                       child: _BookSpine(
                         color: cs.primary,
-                        width: 48,
-                        height: 66,
+                        width: re.w(48),
+                        height: re.h(66),
                       ),
                     ),
                   ),
@@ -60,19 +62,19 @@ class BooksInitialView extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: re.h(24)),
           Text(
             'Discover Books',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: re.sp(20),
               fontWeight: FontWeight.w700,
               color: cs.onSurface,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: re.h(8)),
           Text(
             'Search for any topic above',
-            style: TextStyle(color: cs.onSurfaceVariant),
+            style: TextStyle(color: cs.onSurfaceVariant, fontSize: re.sp(14)),
           ),
         ],
       ),

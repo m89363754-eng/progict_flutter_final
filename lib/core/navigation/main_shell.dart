@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../utils/responsive.dart';
 import '../../features/attendance/logic/attendance_cubit.dart';
 import '../../features/attendance/views/attendance_screen.dart';
 import '../../features/books/views/books_screen.dart';
@@ -66,6 +67,7 @@ class _MainShellState extends State<MainShell>
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     return Scaffold(
       body: BlocProvider.value(
         value: _favorites,
@@ -98,7 +100,7 @@ class _MainShellState extends State<MainShell>
           ],
         ),
         child: NavigationBar(
-          height: 72,
+          height: re.h(72),
           selectedIndex: _index,
           animationDuration: const Duration(milliseconds: 400),
           onDestinationSelected: _onTab,

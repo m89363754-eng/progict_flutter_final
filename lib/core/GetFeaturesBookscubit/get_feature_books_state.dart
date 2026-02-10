@@ -14,11 +14,11 @@ final class GetFeatureBooksLoading extends GetFeatureBooksState {}
 final class GetFeatureBooksSuccess extends GetFeatureBooksState {
   final List<BookModel> books;
 
-  GetFeatureBooksSuccess({required this.books});
+  const GetFeatureBooksSuccess({required this.books});
 }
 
 final class GetFeatureBooksFailure extends GetFeatureBooksState {
   final String errorMessage;
 
-  GetFeatureBooksFailure({required this.errorMessage});
+  const GetFeatureBooksFailure({required this.errorMessage});
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_14/core/navigation/main_shell.dart';
+import 'package:flutter_application_14/core/utils/responsive.dart';
 import 'package:flutter_application_14/features/auth/AuthCubit/cubit/auth_cubit_cubit.dart';
 import 'package:flutter_application_14/features/auth/utils/customsnackbar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,32 +35,30 @@ class _SignInBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<SignInViewModel>();
+    final re = Responsive(context);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: re.horizontalPadding,
             child: Column(
               children: [
-                const SizedBox(height: 48),
-                Image.asset(
-                  AppStrings.logoPath,
-                  width: MediaQuery.sizeOf(context).width * 0.2,
-                ),
-                const SizedBox(height: 16),
+                SizedBox(height: re.h(48)),
+                Image.asset(AppStrings.logoPath, width: re.w(75)),
+                SizedBox(height: re.h(16)),
 
-                const Text(
+                Text(
                   AppStrings.welcomeBack,
-                  style: AppTextStyles.heading,
+                  style: AppTextStyles.heading.copyWith(fontSize: re.sp(29)),
                 ),
-                const SizedBox(height: 4),
-                const Text(
+                SizedBox(height: re.h(4)),
+                Text(
                   AppStrings.signInSubtitle,
-                  style: AppTextStyles.subtitle,
+                  style: AppTextStyles.subtitle.copyWith(fontSize: re.sp(14)),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: re.h(40)),
 
                 AuthCard(
                   child: Form(
@@ -83,7 +82,7 @@ class _SignInBody extends StatelessWidget {
                           controller: viewModel.passwordController,
                           validator: AuthValidators.validatePassword,
                         ),
-                        const SizedBox(height: 24),
+                        SizedBox(height: re.h(24)),
                         BlocConsumer<AuthCubitCubit, AuthCubitState>(
                           listener: (context, state) {
                             if (state is AuthCubiSuccess) {
@@ -119,11 +118,13 @@ class _SignInBody extends StatelessWidget {
                         ),
 
                         const SizedBox(height: 20),
-                        const Text(
+                        Text(
                           AppStrings.orContinueWith,
-                          style: AppTextStyles.dividerText,
+                          style: AppTextStyles.dividerText.copyWith(
+                            fontSize: re.sp(11),
+                          ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: re.h(20)),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -144,7 +145,7 @@ class _SignInBody extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: re.h(32)),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

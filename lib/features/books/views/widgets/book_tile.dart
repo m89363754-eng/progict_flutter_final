@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/widgets/web_image.dart';
+import '../../../../core/utils/responsive.dart';
 import '../../../../features/auth/models/book_model.dart';
 import '../../../../features/favorites/logic/favorites_cubit.dart';
 import 'book_detail_sheet.dart';
@@ -22,6 +23,7 @@ class _BookTileState extends State<BookTile> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     final vi = widget.book.volumeInfo;
     final title = vi?.title ?? 'Untitled';
     final authors = vi?.authors?.join(', ') ?? 'Unknown author';
@@ -41,7 +43,7 @@ class _BookTileState extends State<BookTile> {
           duration: const Duration(milliseconds: 120),
           decoration: BoxDecoration(
             color: cs.surfaceContainer,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(re.r(18)),
             border: Border.all(
               color: cs.outlineVariant.withValues(alpha: 0.25),
             ),
@@ -56,7 +58,7 @@ class _BookTileState extends State<BookTile> {
                   ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(re.w(12)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -201,11 +203,16 @@ class _BookImage extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: imageUrl != null
-              ? WebImage(
-                  url: imageUrl!,
+              ? CachedNetworkImage(
+                  imageUrl: imageUrl!,
                   fit: BoxFit.cover,
                   width: 80,
                   height: 115,
+                  placeholder: (_, __) => const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  errorWidget: (_, __, ___) =>
+                      ImagePlaceholder(colorScheme: cs),
                 )
               : ImagePlaceholder(colorScheme: cs),
         ),

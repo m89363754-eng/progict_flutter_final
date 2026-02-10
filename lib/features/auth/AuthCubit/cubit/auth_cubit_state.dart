@@ -14,7 +14,7 @@ final class AuthCubiSuccess extends AuthCubitState {}
 final class AuthCubitfailur extends AuthCubitState {
   final String message;
 
-  AuthCubitfailur({required this.message});
+  const AuthCubitfailur({required this.message});
 }
 
 final class AuthCubitLoading extends AuthCubitState {}

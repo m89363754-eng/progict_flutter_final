@@ -156,7 +156,7 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: AppRoutes.signIn,
+      initialRoute: AppRoutes.splachscreen,
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }

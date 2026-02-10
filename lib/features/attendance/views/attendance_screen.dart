@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../core/widgets/blue_header.dart';
 import '../logic/attendance_cubit.dart';
 import '../logic/attendance_state.dart';
@@ -36,6 +37,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
 
   @override
   Widget build(BuildContext context) {
+    final re = Responsive(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4FF),
       body: Column(
@@ -69,7 +71,12 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                     ),
                     Expanded(
                       child: ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+                        padding: EdgeInsets.fromLTRB(
+                          re.w(16),
+                          re.h(8),
+                          re.w(16),
+                          re.h(100),
+                        ),
                         itemCount: state.employees.length,
                         itemBuilder: (_, i) {
                           final d = (i * 0.07).clamp(0.0, 0.6);

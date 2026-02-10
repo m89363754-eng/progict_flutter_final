@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/responsive.dart';
 
 class AttendanceSummaryBar extends StatelessWidget {
   final int present;
@@ -15,6 +16,7 @@ class AttendanceSummaryBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 500),
@@ -24,8 +26,8 @@ class AttendanceSummaryBar extends StatelessWidget {
         child: Opacity(opacity: v, child: child),
       ),
       child: Container(
-        margin: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        margin: EdgeInsets.fromLTRB(re.w(16), re.h(12), re.w(16), re.h(4)),
+        padding: EdgeInsets.symmetric(horizontal: re.w(20), vertical: re.h(16)),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [

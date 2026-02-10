@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/utils/responsive.dart';
 import '../../../core/widgets/blue_header.dart';
-import '../../../core/widgets/web_image.dart';
 import '../logic/favorites_cubit.dart';
 import '../../books/views/widgets/book_detail_sheet.dart';
 
@@ -11,6 +12,7 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final re = Responsive(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4FF),
@@ -20,9 +22,14 @@ class FavoritesScreen extends StatelessWidget {
           Expanded(
             child: BlocBuilder<FavoritesCubit, FavoritesState>(
               builder: (context, state) {
-                if (state.books.isEmpty) return _buildEmpty(cs);
+                if (state.books.isEmpty) return _buildEmpty(cs, re);
                 return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                  padding: EdgeInsets.fromLTRB(
+                    re.w(16),
+                    re.h(8),
+                    re.w(16),
+                    re.h(16),
+                  ),
                   itemCount: state.books.length,
                   itemBuilder: (_, i) {
                     final book = state.books[i];
@@ -41,10 +48,11 @@ class FavoritesScreen extends StatelessWidget {
                             color: Colors.red.shade700,
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          child: const Icon(
+
+                          child: Icon(
                             Icons.delete_outline_rounded,
                             color: Colors.white,
-                            size: 28,
+                            size: re.icon(28),
                           ),
                         ),
                         onDismissed: (_) {
@@ -66,7 +74,7 @@ class FavoritesScreen extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               color: cs.surfaceContainer,
-                              borderRadius: BorderRadius.circular(18),
+                              borderRadius: BorderRadius.circular(re.r(18)),
                               border: Border.all(
                                 color: cs.outlineVariant.withValues(
                                   alpha: 0.25,
@@ -74,11 +82,11 @@ class FavoritesScreen extends StatelessWidget {
                               ),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(12),
+                              padding: EdgeInsets.all(re.w(12)),
                               child: Row(
                                 children: [
-                                  _FavImage(imageUrl: imageUrl, cs: cs),
-                                  const SizedBox(width: 14),
+                                  _FavImage(imageUrl: imageUrl, cs: cs, re: re),
+                                  SizedBox(width: re.w(14)),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -90,17 +98,17 @@ class FavoritesScreen extends StatelessWidget {
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 15,
+                                            fontSize: re.sp(15),
                                             color: cs.onSurface,
                                           ),
                                         ),
-                                        const SizedBox(height: 4),
+                                        SizedBox(height: re.h(4)),
                                         Text(
                                           vi?.authors?.join(', ') ?? 'Unknown',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: re.sp(12),
                                             fontWeight: FontWeight.w600,
                                             color: cs.primary.withValues(
                                               alpha: 0.7,
@@ -138,7 +146,7 @@ class FavoritesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmpty(ColorScheme cs) {
+  Widget _buildEmpty(ColorScheme cs, Responsive re) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -149,32 +157,32 @@ class FavoritesScreen extends StatelessWidget {
             curve: Curves.elasticOut,
             builder: (_, v, child) => Transform.scale(scale: v, child: child),
             child: Container(
-              width: 120,
-              height: 120,
+              width: re.w(120),
+              height: re.w(120),
               decoration: BoxDecoration(
                 color: cs.errorContainer.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.favorite_outline_rounded,
-                size: 56,
+                size: re.icon(56),
                 color: Colors.red.shade300,
               ),
             ),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: re.h(24)),
           Text(
             'No Favorites Yet',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: re.sp(20),
               fontWeight: FontWeight.w700,
               color: cs.onSurface,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: re.h(8)),
           Text(
             'Tap the heart on any book to save it here',
-            style: TextStyle(color: cs.onSurfaceVariant),
+            style: TextStyle(color: cs.onSurfaceVariant, fontSize: re.sp(14)),
           ),
         ],
       ),
@@ -185,17 +193,29 @@ class FavoritesScreen extends StatelessWidget {
 class _FavImage extends StatelessWidget {
   final String? imageUrl;
   final ColorScheme cs;
-  const _FavImage({required this.imageUrl, required this.cs});
+  final Responsive re;
+  const _FavImage({required this.imageUrl, required this.cs, required this.re});
 
   @override
   Widget build(BuildContext context) {
+    final w = re.w(60);
+    final h = re.h(85);
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(re.r(12)),
       child: SizedBox(
-        width: 60,
-        height: 85,
+        width: w,
+        height: h,
         child: imageUrl != null
-            ? WebImage(url: imageUrl!, fit: BoxFit.cover, width: 60, height: 85)
+            ? CachedNetworkImage(
+                imageUrl: imageUrl!,
+                fit: BoxFit.cover,
+                width: w,
+                height: h,
+                placeholder: (_, __) => const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                errorWidget: (_, __, ___) => _placeholder(),
+              )
             : _placeholder(),
       ),
     );
