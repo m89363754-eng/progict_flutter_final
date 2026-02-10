@@ -35,11 +35,9 @@ class SignInViewModel extends ChangeNotifier {
     try {
       // TODO: Replace with actual authentication service call.
       await Future.delayed(const Duration(seconds: 1));
-
-      debugPrint('✅ Sign-in successful for: ${emailController.text.trim()}');
+ 
       return true;
     } catch (e) {
-      debugPrint('❌ Sign-in failed: $e');
       return false;
     } finally {
       _setLoading(false);
@@ -48,17 +46,14 @@ class SignInViewModel extends ChangeNotifier {
 
   /// Handles Facebook login tap.
   void onFacebookLogin() {
-    // TODO: Implement Facebook login.
-    debugPrint('Facebook login tapped');
+   
   }
 
   /// Handles Apple login tap.
   void onAppleLogin() {
-    // TODO: Implement Apple login.
-    debugPrint('Apple login tapped');
+    
   }
 
-  // ── Helpers ──────────────────────────────────────────────────────────
 
   void _setLoading(bool value) {
     _isLoading = value;

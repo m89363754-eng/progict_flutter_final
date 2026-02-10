@@ -40,7 +40,6 @@ class SignUpViewModel extends ChangeNotifier {
       debugPrint('✅ Account created for: ${emailController.text.trim()}');
       return true;
     } catch (e) {
-      debugPrint('❌ Sign-up failed: $e');
       return false;
     } finally {
       _setLoading(false);

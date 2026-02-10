@@ -60,7 +60,6 @@ class _SignInBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-                // ── Form Card ──────────────────────────────────────────
                 AuthCard(
                   child: Form(
                     key: viewModel.formKey,
@@ -96,7 +95,6 @@ class _SignInBody extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
 
-                        // ── Social Buttons ─────────────────────────────
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -118,7 +116,6 @@ class _SignInBody extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                // ── Navigate to Sign Up ────────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
