@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1004822563515",
+    "project_id": "hodorapp-eabe2",
+    "storage_bucket": "hodorapp-eabe2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004822563515:android:8be12d266527d9ded2f79e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_14"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004822563515-2a3lublikmrcb4cqp7us9j05d0g4kgqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm5423-onWXRK9WtTlluxDBIJOB5kdqQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004822563515-2a3lublikmrcb4cqp7us9j05d0g4kgqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

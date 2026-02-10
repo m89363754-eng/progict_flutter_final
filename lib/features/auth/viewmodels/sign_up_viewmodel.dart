@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_14/features/auth/AuthCubit/cubit/auth_cubit_cubit.dart';
+import 'package:provider/provider.dart';
 
 /// ViewModel for the Sign Up screen.
 ///
@@ -28,19 +30,19 @@ class SignUpViewModel extends ChangeNotifier {
   /// Attempts to create a new account.
   ///
   /// Returns `true` on success, `false` otherwise.
-  Future<bool> signUp() async {
+  Future<bool> signUp(BuildContext context) async {
     if (!(formKey.currentState?.validate() ?? false)) return false;
-
+    context.read<AuthCubitCubit>().signup(
+      email: emailController.text,
+      password: passwordController.text,
+    );
     _setLoading(true);
 
     try {
-      // TODO: Replace with actual registration service call.
       await Future.delayed(const Duration(seconds: 1));
 
-      debugPrint('✅ Account created for: ${emailController.text.trim()}');
       return true;
     } catch (e) {
-      debugPrint('❌ Sign-up failed: $e');
       return false;
     } finally {
       _setLoading(false);
